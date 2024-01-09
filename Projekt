@@ -1,0 +1,97 @@
+# Informace
+"""
+projektPRG_1.py: první projekt
+Autor:           (Já) Jiří Šedivý
+Kontakty:        sedivy.jura@seznam.cz
+                 704 589 746
+"""
+# R uživatelé
+registrovani_uzivatele = {
+    'bob': '123',
+    'ann': 'pass123',
+    'mike': 'password123',
+    'liz': 'pass123'
+}
+
+# Přihlašování
+while True:
+    uzivatelske_jmeno = input("Prosím zadejte uživatelské jméno: ")
+    heslo = input("Prosím vložte heslo: ")
+    if uzivatelske_jmeno in registrovani_uzivatele and registrovani_uzivatele[uzivatelske_jmeno] == heslo:
+        print("-" * 40)
+        print(f"Vítejte v programu, {uzivatelske_jmeno}")
+        break
+    else:
+        print("Špatné uživatelské jméno nebo heslo...")
+        quit()
+# Texty k analýze
+TEXTY = ['''
+Situated about 10 miles west of Kemmerer,
+Fossil Butte is a ruggedly impressive
+topographic feature that rises sharply
+some 1000 feet above Twin Creek Valley
+to an elevation of more than 7500 feet
+above sea level. The butte is located just
+north of US 30N and the Union Pacific Railroad,
+which traverse the valley. ''',
+'''At the base of Fossil Butte are the bright
+red, purple, yellow and gray beds of the Wasatch
+Formation. Eroded portions of these horizontal
+beds slope gradually upward from the valley floor
+and steepen abruptly. Overlying them and extending
+to the top of the butte are the much steeper
+buff-to-white beds of the Green River Formation,
+which are about 300 feet thick.''',
+'''The monument contains 8198 acres and protects
+a portion of the largest deposit of freshwater fish
+fossils in the world. The richest fossil fish deposits
+are found in multiple limestone layers, which lie some
+100 feet below the top of the butte. The fossils
+represent several varieties of perch, as well as
+other freshwater genera and herring similar to those
+in modern oceans. Other fish such as paddlefish,
+garpike and stingray are also present.'''
+]
+
+# Text
+while True:
+    vyber_textu = input("Prosím, zadejte číslo od 1 do 3 pro výběr textu: ")
+    if vyber_textu.isnumeric():
+        vyber_textu = int(vyber_textu)
+        if 1 <= vyber_textu <= 3:
+            break
+    print("Neplatné číslo. Prosím, zadejte číslo od 1 do 3 pro výběr textu.")
+# Analýza
+vybrany_text = TEXTY[vyber_textu - 1]
+slova = vybrany_text.split()
+delky_slov = [len(slovo.strip(".,!?")) for slovo in slova]
+titlecase_slova = [slovo for slovo in slova if slovo.istitle()]
+uppercase_slova = [slovo for slovo in slova if slovo.isupper()]
+lowercase_slova = [slovo for slovo in slova if slovo.islower()]
+numericke_retezce = [slovo for slovo in slova if slovo.isnumeric()]
+numericke_hodnoty = [int(slovo) for slovo in numericke_retezce]
+
+# Statistika
+print("-" * 40)
+print(f"Ve vybraném textu je {len(slova)} slov.")
+print(f"Je zde {len(titlecase_slova)} slov začínajících velkým písmenem.")
+print(f"Je zde {len(uppercase_slova)} slov psaných velkými písmeny.")
+print(f"Je zde {len(lowercase_slova)} slov psaných malými písmeny.")
+print(f"Je zde {len(numericke_retezce)} číselných řetězců.")
+print(f"Součet všech čísel je {sum(numericke_hodnoty)}")
+print("-" * 40)
+
+# Graf 
+pocet_delka_slov = {}
+for delka in delky_slov:
+    if delka in pocet_delka_slov:
+        pocet_delka_slov[delka] += 1
+    else:
+        pocet_delka_slov[delka] = 1
+
+sestupne_serazene_delky = sorted(pocet_delka_slov.keys())
+max_delka = max(sestupne_serazene_delky)
+for delka in range(1, max_delka + 1):
+    pocet = pocet_delka_slov.get(delka, 0)
+    if pocet > 0:
+        print(f"{delka:2}˫{'-' * pocet} {pocet}")
